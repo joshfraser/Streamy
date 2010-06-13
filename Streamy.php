@@ -59,34 +59,23 @@ class Streamy {
         return "{$type}=".implode(",", $params_array);
     }
     
-    // returns general tweets at the following levels:
-    //  - firehose: all tweets (requires contract)
-    //  - gardenhose: lots of public statuses (requires contract)
-    //  - spritzer: some public statuses (publically available)
-    public function firehose($callback, $level = "spritzer") {
-        $uri = "/{$level}.{$this->format}";
-        return $this->connection_manager($callback, "GET", $uri);
+    // these need to be updated as twitter has changed their levels and naming a good bit
+    public function firehose($callback) {
+        return $this->connection_manager($callback, "GET");
     }
     
-    // returns tweets from a specified subset of users at the following levels:
-    //  - birdbog: up to 200,000 users (requires contract)
-    //  - shadow: up to 50,000 users (requires contract)
-    //  - follow: up to 200 users (publically available)
-    public function follow($callback, $post_data, $level = "follow", $refresh_callback = false, $refresh_secs = false) {
-        $uri = "/{$level}.{$this->format}";
-        return $this->connection_manager($callback, "POST", $uri, $post_data, $refresh_callback, $refresh_secs);
+    public function follow($callback, $post_data, $refresh_callback = false, $refresh_secs = false) {
+        return $this->connection_manager($callback, "POST", $post_data, $refresh_callback, $refresh_secs);
     }
 
-    // returns tweets that match a specified set of keywords at the following levels:
-    //  - track: up to 50 keywords (publically available)
-	//  (I'm assuming they are going to add more levels over time)
-    public function track($callback, $post_data, $level = "track", $refresh_callback = false, $refresh_secs = false) {
-        $uri = "/{$level}.{$this->format}";
-        return $this->connection_manager($callback, "POST", $uri, $post_data, $refresh_callback, $refresh_secs);
+    public function track($callback, $post_data, $refresh_callback = false, $refresh_secs = false) {
+        return $this->connection_manager($callback, "POST", $post_data, $refresh_callback, $refresh_secs);
     }
     
     //babysit the connection.  these are the gears that run the whole thing. 
-    private function connection_manager($callback, $method, $uri, $post_data = false, $refresh_callback = false, $refresh_secs = 30) {
+    private function connection_manager($callback, $method, $post_data = false, $refresh_callback = false, $refresh_secs = 30) {
+        
+        $uri = "/1/statuses/filter.json";
         
         // generate a random PID so we have a way to eliminate dupe connections
         $this->pid = rand(0,9999);
