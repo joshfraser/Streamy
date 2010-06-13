@@ -1,0 +1,4 @@
+reconnecting.  attempt # 9 at Sat, 12 Jun 2010 23:01:18 -0600
+track= at Sat, 12 Jun 2010 23:01:18 -0600
+received response code: 406 at Sat, 12 Jun 2010 23:01:18 -0600
+Connection lost to twitter streaming API. Requires manual restart. at Sat, 12 Jun 2010 23:01:18 -0600
